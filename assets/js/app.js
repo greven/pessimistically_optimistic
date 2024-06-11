@@ -22,21 +22,51 @@ import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 
+// Hooks
+
+let Hooks = {}
+
+Hooks.Ping = {
+  mounted(){
+    let pingEvery
+
+    this.handleEvent("pong", () => {
+      let rtt = Date.now() - this.nowMs
+      pingEvery = pingEvery ? 5000 : 1000
+      this.el.innerText = `${rtt}`
+      this.timer = setTimeout(() => this.ping(rtt), pingEvery)
+    })
+
+    this.ping(null)
+  },
+
+  reconnected(){
+    clearTimeout(this.timer)
+    this.ping(null)
+  },
+
+  destroyed(){ clearTimeout(this.timer) },
+
+  ping(rtt){
+    this.nowMs = Date.now()
+    this.pushEventTo(this.el, "ping", {rtt: rtt})
+  }
+}
+
+Hooks.ListItem = {
+  mounted() {
+    this.handleEvent("unhide", ({container}) => {
+      this.el.classList.remove("hidden")
+      this.el.style.display = container
+    })
+  }
+}
+
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
   params: {_csrf_token: csrfToken},
-  hooks: {
-    // Add a hook to scroll to the bottom of the chat container when the page loads.
-    ListItem: {
-      mounted() {
-        this.handleEvent("unhide", ({container}) => {
-          this.el.classList.remove("hidden")
-          this.el.style.display = container
-        })
-      }
-    }
-  }
+  hooks: Hooks
 })
 
 // Show progress bar on live navigation and form submits

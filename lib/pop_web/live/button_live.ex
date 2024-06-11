@@ -6,7 +6,7 @@ defmodule POPWeb.ButtonLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <.back navigate={~p"/"}>Home</.back>
+    <PageComponents.page_nav />
 
     <.header>
       Simple Optimistic Update

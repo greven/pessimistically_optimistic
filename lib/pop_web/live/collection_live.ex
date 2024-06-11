@@ -1,10 +1,12 @@
 defmodule POPWeb.CollectionLive do
   use POPWeb, :live_view
 
+  alias POPWeb.PageComponents
+
   @impl true
   def render(assigns) do
     ~H"""
-    <.back navigate={~p"/"}>Home</.back>
+    <PageComponents.page_nav />
 
     <.header>
       Collection Items Optimistic Updates
@@ -62,7 +64,16 @@ defmodule POPWeb.CollectionLive do
 
       <div class="mt-4 flex flex-col items-center justify-center gap-6">
         <%= if @items != [] do %>
-          <ol id="items-list" class="w-full flex flex-col gap-3">
+          <ol
+            id="items-list"
+            class="w-full flex flex-col gap-3"
+            phx-mounted={
+              JS.transition(
+                {"transition transform duration-400 ease-in", "opacity-0", "opacity-100"},
+                time: 400
+              )
+            }
+          >
             <%= for item <- @items do %>
               <li
                 id={"fruit-#{item.id}"}
@@ -113,7 +124,7 @@ defmodule POPWeb.CollectionLive do
         <% else %>
           <div class="flex flex-col items-center">
             <span class="text-center text-gray-500">
-              You hate all the fruits! :)
+              You ate all the fruits! :)
             </span>
             <.button phx-click="reset" class="mt-4">Restock!</.button>
           </div>

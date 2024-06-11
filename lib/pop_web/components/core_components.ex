@@ -557,16 +557,19 @@ defmodule POPWeb.CoreComponents do
       <.back navigate={~p"/posts"}>Back to posts</.back>
   """
   attr :navigate, :any, required: true
+  attr :rest, :global
+
   slot :inner_block, required: true
 
   def back(assigns) do
     ~H"""
-    <div class="mt-16">
+    <div {@rest}>
       <.link
         navigate={@navigate}
-        class="text-sm font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
+        class="inline-flex items-center gap-x-1.5 transition-colors bg-zinc-100 rounded-md px-1.5 py-0.5 font-medium
+        text-sm text-zinc-900 hover:bg-zinc-50 hover:text-zinc-700"
       >
-        <.icon name="hero-arrow-left-solid" class="h-3 w-3" />
+        <.icon name="hero-arrow-left-mini" class="h-3 w-3" />
         <%= render_slot(@inner_block) %>
       </.link>
     </div>

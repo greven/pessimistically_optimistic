@@ -1,6 +1,8 @@
 defmodule POPWeb.PageComponents do
   use Phoenix.Component
 
+  use POPWeb, :verified_routes
+
   alias POPWeb.CoreComponents
 
   @doc false
@@ -83,6 +85,30 @@ defmodule POPWeb.PageComponents do
       <.link class="text-blue-500" navigate={@to}>
         <%= render_slot(@inner_block) %>
       </.link>
+    </div>
+    """
+  end
+
+  @doc false
+
+  def page_nav(assigns) do
+    ~H"""
+    <div class="flex justify-between">
+      <CoreComponents.back navigate={~p"/"}>Home</CoreComponents.back>
+      <.ping />
+    </div>
+    """
+  end
+
+  @doc false
+
+  attr :class, :any, default: nil
+  attr :rest, :global
+
+  def ping(assigns) do
+    ~H"""
+    <div class={["text-sm text-zinc-900", @class]}>
+      <.live_component id="ping" module={POPWeb.PingLive} />
     </div>
     """
   end

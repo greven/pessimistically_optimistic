@@ -1,10 +1,12 @@
 defmodule POPWeb.TasksLive do
   use POPWeb, :live_view
 
+  alias POPWeb.PageComponents
+
   @impl true
   def render(assigns) do
     ~H"""
-    <.back navigate={~p"/"}>Home</.back>
+    <PageComponents.page_nav />
 
     <.header>
       Tasks List Optimistic Update
