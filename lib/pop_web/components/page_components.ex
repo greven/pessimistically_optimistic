@@ -41,8 +41,8 @@ defmodule POPWeb.PageComponents do
       </span>
 
       <span class="relative flex items-center gap-2.5">
-        <CoreComponents.icon name={@icon} class="w-4 h-4 text-red-500 group-hover:text-red-600" />
-        <span><%= render_slot(@inner_block) %></span>
+        <CoreComponents.icon name={@icon} class="w-5 h-5 text-red-500 group-hover:text-red-600" />
+        <span class="text-md"><%= render_slot(@inner_block) %></span>
       </span>
     </.link>
     """
