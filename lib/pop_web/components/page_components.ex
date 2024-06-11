@@ -102,6 +102,7 @@ defmodule POPWeb.PageComponents do
 
   @doc false
 
+  attr :legend, :string, default: nil
   attr :class, :any, default: nil
   attr :rest, :global
 

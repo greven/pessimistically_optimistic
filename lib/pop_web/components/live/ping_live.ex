@@ -15,26 +15,20 @@ defmodule POPWeb.PingLive do
         </span>
       </span>
 
-      <div class="flex justify-center gap-1">
-        <span class="text-sm">Ping:</span>
-        <div class="font-semibold">
-          <span id="ping-value" class="font-mono"></span><span class="text-zinc-600">ms</span>
-        </div>
+      <div class="font-semibold">
+        <span id="ping-value" class="font-mono"></span><span
+          id="ping-unit"
+          class="hidden text-zinc-600"
+        >ms</span>
       </div>
     </div>
     """
   end
 
   @impl true
-  def mount(socket) do
-    {:ok, socket, temporary_assigns: [ping: nil]}
-  end
-
-  @impl true
-  def handle_event("ping", %{"rtt" => ping}, socket) do
+  def handle_event("ping", %{"rtt" => _rtt}, socket) do
     {:noreply,
      socket
-     |> assign(ping: ping)
      |> push_event("pong", %{})}
   end
 end

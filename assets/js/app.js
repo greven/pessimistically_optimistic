@@ -10,17 +10,37 @@ let Hooks = {}
 Hooks.Ping = {
   mounted() {
     let pingEvery
+
     this.valueEl = this.el.querySelector('#ping-value')
+    this.unitEl = this.el.querySelector('#ping-unit')
+    this.indicatorEl = this.el.querySelector('#ping-indicator')
+    this.animationEl = this.el.querySelector('#ping-animation')
 
     this.handleEvent('pong', () => {
       let rtt = Date.now() - this.nowMs
       pingEvery = pingEvery ? 5000 : 1000
-      this.valueEl.innerText = `${rtt}`
+
+      if (this.loading) {
+        this.el.classList.remove('animate-pulse')
+        this.valueEl.classList.remove('text-gray-500')
+        this.valueEl.innerText = `${rtt}`
+
+        this.unitEl.innerText = 'ms'
+        this.unitEl.classList.remove('hidden')
+      }
+
       this.setIndicator(rtt)
       this.timer = setTimeout(() => this.ping(rtt), pingEvery)
+      this.loading = false
     })
 
     this.ping(null)
+    this.loading = true
+
+    this.valueEl.innerText = 'ping...'
+    this.valueEl.classList.add('text-gray-500')
+    this.el.classList.add('animate-pulse')
+    this.setPingClass(this.indicatorEl, 'bg-gray-300')
   },
 
   reconnected() {
@@ -48,12 +68,14 @@ Hooks.Ping = {
       className = 'bg-orange-500'
     } else if (rtt < 500) {
       className = 'bg-red-500'
+    } else if (rtt < 5000) {
+      className = 'bg-purple-600'
     } else {
       className = 'bg-gray-300'
     }
 
-    this.setPingClass(this.el.querySelector('#ping-indicator'), className)
-    this.setPingClass(this.el.querySelector('#ping-animation'), className)
+    this.setPingClass(this.indicatorEl, className)
+    this.setPingClass(this.animationEl, className)
   },
 
   setPingClass(el, classeName) {
@@ -79,7 +101,7 @@ let liveSocket = new LiveSocket('/live', Socket, {
 })
 
 // Show progress bar on live navigation and form submits
-topbar.config({ barColors: { 0: '#29d' }, shadowColor: 'rgba(0, 0, 0, .3)' })
+topbar.config({ barColors: { 0: '#F66F4D' }, shadowColor: 'rgba(0, 0, 0, .3)' })
 window.addEventListener('phx:page-loading-start', (_info) => topbar.show(300))
 window.addEventListener('phx:page-loading-stop', (_info) => topbar.hide())
 
