@@ -6,10 +6,13 @@ defmodule POPWeb.PingLive do
     ~H"""
     <div class="flex justify-center items-center">
       <span class="relative flex h-2 w-2 mr-2">
-        <span class={[
-          "animate-ping absolute inline-flex h-full w-full rounded-full transition-colors opacity-75",
-          ping_class(@ping)
-        ]}>
+        <span
+          :if={@ping}
+          class={[
+            "animate-ping absolute inline-flex h-full w-full rounded-full transition-colors opacity-75",
+            ping_class(@ping)
+          ]}
+        >
         </span>
         <span class={[
           "relative inline-flex rounded-full h-2 w-2 transition-colors",
@@ -47,7 +50,7 @@ defmodule POPWeb.PingLive do
       ping < 200 -> "bg-yellow-500"
       ping < 500 -> "bg-red-500"
       ping < 2000 -> "bg-purple-500"
-      true -> "bg-gray-500"
+      true -> "bg-gray-300"
     end
   end
 end
