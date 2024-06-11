@@ -45,7 +45,8 @@ defmodule POPWeb.PingLive do
     cond do
       ping < 100 -> "bg-green-500"
       ping < 200 -> "bg-yellow-500"
-      ping < 300 -> "bg-red-500"
+      ping < 500 -> "bg-red-500"
+      ping < 2000 -> "bg-purple-500"
       true -> "bg-gray-500"
     end
   end
